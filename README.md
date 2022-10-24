@@ -1,1 +1,1 @@
-# typescript-package-template
+# @ghostebony/requests
