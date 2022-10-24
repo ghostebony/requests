@@ -1,19 +1,18 @@
 {
-	"name": "typescript-package-template",
+	"name": "@ghostebony/requests",
 	"version": "0.0.1",
 	"main": "index.js",
 	"type": "module",
 	"author": "Pedro Américo",
 	"license": "MIT",
-	"repository": "github:ghostebony/typescript-package-template",
-	"description": "typescript package template",
+	"repository": "github:ghostebony/requests",
 	"keywords": [],
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"build": "tsc --build",
 		"clean": "tsc --build --clean",
 		"build:watch": "tsc --build --watch",
-		"build:clean": "pnpm run clean && pnpm run build"
+		"build:clean": "pnpm clean && pnpm build"
 	},
 	"packageManager": "pnpm@7.14.0",
 	"engines": {
