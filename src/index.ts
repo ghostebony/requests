@@ -67,7 +67,10 @@ export enum statusCode {
 	NETWORK_AUTHENTICATION_REQUIRED = 511,
 }
 
-const REQUEST = async <Data = any, Error = any>(url: string, options: Types.RequestOptions) => {
+const REQUEST = async <Data = any, Error = any>(
+	url: string,
+	options: Types.RequestOptions = {}
+) => {
 	let body: BodyInit | null | undefined;
 
 	if (options.params) {
