@@ -67,35 +67,38 @@ export enum statusCode {
 	NETWORK_AUTHENTICATION_REQUIRED = 511,
 }
 
-const REQUEST = async <Data, Error = unknown>(url: string, options: Types.RequestOptions) => {
-	let body;
-
-	if (!options.method) options.method = "GET";
-
-	if (!options.response) options.response = "json";
+const REQUEST = async <Data = any, Error = any>(url: string, options: Types.RequestOptions) => {
+	let body: BodyInit | null | undefined;
 
 	if (options.params) {
-		const params = new URLSearchParams(object.filter(options.params, undefined)).toString();
+		const params = new URLSearchParams(
+			object.filter(options.params, null, undefined)
+		).toString();
 
 		if (params) {
 			url = `${url}?${params}`;
 		}
 	}
 
-	if (options.cookies)
-		options.headers = { ...options.headers, cookie: object.serialize(options.cookies) };
+	if (options.cookies) {
+		options.headers = {
+			...options.headers,
+			cookie: object.serialize(object.filter(options.cookies, null, undefined)),
+		};
+	}
 
-	const isJSON = options.body?.toString() === "[object Object]";
 
-	if (isJSON) {
-		options.headers = { "content-type": "application/json", ...options.headers };
-		body = JSON.stringify(options.body);
-	} else {
-		body = options.body as BodyInit | null | undefined;
+	if (options.body) {
+		if (options.body.toString() === "[object Object]") {
+			options.headers = { "content-type": "application/json", ...options.headers };
+			body = JSON.stringify(options.body);
+		} else {
+			body = options.body as BodyInit;
+		}
 	}
 
 	const response = await fetch(url, {
-		method: options.method,
+		method: options.method ?? "GET",
 		headers: {
 			accept: "application/json",
 			...options.headers,
@@ -104,7 +107,7 @@ const REQUEST = async <Data, Error = unknown>(url: string, options: Types.Reques
 	});
 
 	const responseBody =
-		options.response !== "none" ? await response[options.response]() : response.body;
+		options.response !== "none" ? await response[options.response ?? "json"]() : response.body;
 
 	let data: Data | undefined;
 	let error: Error | undefined;
@@ -124,22 +127,22 @@ const REQUEST = async <Data, Error = unknown>(url: string, options: Types.Reques
 	};
 };
 
-const DELETE = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const DELETE = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "DELETE", ...options });
 
-const HEAD = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const HEAD = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "HEAD", ...options });
 
-const GET = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const GET = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "GET", ...options });
 
-const PATCH = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const PATCH = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "PATCH", ...options });
 
-const POST = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const POST = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "POST", ...options });
 
-const PUT = <Data, Error = unknown>(url: string, options?: Types.RequestOptions) =>
+const PUT = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
 	REQUEST<Data, Error>(url, { method: "PUT", ...options });
 
 export default {
