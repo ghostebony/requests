@@ -70,7 +70,10 @@ export enum STATUS_CODE {
 const REQUEST = async <Data = any, Error = any>(
 	url: string,
 	options: Types.RequestOptions = {}
-) => {
+): Promise<
+	| { data: Data; error: undefined; ok: true; status: number; headers: Headers }
+	| { data: undefined; error: Error; ok: false; status: number; headers: Headers }
+> => {
 	let body: BodyInit | null | undefined;
 
 	if (options.params) {
@@ -112,19 +115,21 @@ const REQUEST = async <Data = any, Error = any>(
 	const responseBody =
 		options.response !== "none" ? await response[options.response ?? "json"]() : response.body;
 
-	let data: Data | undefined;
-	let error: Error | undefined;
 
 	if (response.ok) {
-		data = responseBody;
-	} else {
-		error = responseBody;
+		return {
+			data: responseBody as Data,
+			error: undefined,
+			ok: true,
+			status: response.status,
+			headers: response.headers,
+		};
 	}
 
 	return {
-		data,
-		error,
-		ok: response.ok,
+		data: undefined,
+		error: responseBody as Error,
+		ok: false,
 		status: response.status,
 		headers: response.headers,
 	};
