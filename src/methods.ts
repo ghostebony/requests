@@ -6,15 +6,15 @@ export const DELETE = <ResponseData = any, ResponseError = any>(
 	options?: OmitRequestOptions<"method">
 ) => request<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
 
-export const HEAD = <ResponseData = any, ResponseError = any>(
-	url: string,
-	options?: OmitRequestOptions<"method">
-) => request<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
-
 export const GET = <ResponseData = any, ResponseError = any>(
 	url: string,
 	options?: OmitRequestOptions<"method">
 ) => request<ResponseData, ResponseError>(url, { method: "GET", ...options });
+
+export const HEAD = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
 
 export const PATCH = <ResponseData = any, ResponseError = any>(
 	url: string,
@@ -32,8 +32,8 @@ export const PUT = <ResponseData = any, ResponseError = any>(
 ) => request<ResponseData, ResponseError>(url, { method: "PUT", ...options });
 
 export { DELETE as del };
-export { HEAD as head };
 export { GET as get };
+export { HEAD as head };
 export { PATCH as patch };
 export { POST as post };
 export { PUT as put };
@@ -41,10 +41,10 @@ export { PUT as put };
 export default {
 	DELETE,
 	delete: DELETE,
-	HEAD,
-	head: HEAD,
 	GET,
 	get: GET,
+	HEAD,
+	head: HEAD,
 	PATCH,
 	patch: PATCH,
 	POST,
