@@ -4,3 +4,5 @@ export interface RequestOptions extends Omit<RequestInit, "body"> {
 	params?: Record<string | number, string | number | boolean | null | undefined>;
 	response?: "arrayBuffer" | "blob" | "formData" | "json" | "text" | "none";
 }
+
+export type OmitRequestOptions<T extends keyof RequestOptions> = Omit<RequestOptions, T>;

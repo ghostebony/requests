@@ -1,5 +1,5 @@
 import { object } from "@ghostebony/utils";
-import type * as Types from "./types";
+import type { OmitRequestOptions, RequestOptions } from "./types";
 
 export const STATUS_CODE = {
 	HTTP_100_CONTINUE: 100,
@@ -138,31 +138,31 @@ const REQUEST = async <ResponseData = any, ResponseError = any>(
 const DELETE = <ResponseData = any, ResponseError = any>(
 	url: string,
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 const HEAD = <ResponseData = any, ResponseError = any>(
 	url: string,
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 const GET = <ResponseData = any, ResponseError = any>(
 	url: string,
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "GET", ...options });
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 const PATCH = <ResponseData = any, ResponseError = any>(
 	url: string,
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "PATCH", ...options });
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 const POST = <ResponseData = any, ResponseError = any>(
 	url: string,
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "POST", ...options });
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 const PUT = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Omit<Types.RequestOptions, "method">
+	options?: OmitRequestOptions<"method">
 
 export default {
 	STATUS_CODE,
