@@ -45,8 +45,14 @@ export const REQUEST = async <ResponseData = any, ResponseError = any>(
 		body,
 	});
 
-	const responseBody =
-		options.response !== "none" ? await response[options.response ?? "json"]() : response.body;
+	let responseBody = null;
+
+	if (response.headers.has("content-type")) {
+		responseBody =
+			options.response !== "none"
+				? await response[options.response ?? "json"]()
+				: response.body;
+	}
 
 	if (response.ok) {
 		return {
