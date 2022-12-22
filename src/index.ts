@@ -1,4 +1,4 @@
-import { object } from "@ghostebony/utils";
+import { request } from "./request";
 import type { OmitRequestOptions, RequestOptions } from "./types";
 
 export const STATUS_CODE = {
@@ -67,108 +67,41 @@ export const STATUS_CODE = {
 	HTTP_511_NETWORK_AUTHENTICATION_REQUIRED: 511,
 } as const;
 
-const REQUEST = async <ResponseData = any, ResponseError = any>(
-	url: string,
-	options: Types.RequestOptions = {}
-): Promise<
-	| { data: ResponseData; error: undefined; ok: true; status: number; headers: Headers }
-	| { data: undefined; error: ResponseError; ok: false; status: number; headers: Headers }
-> => {
-	let body: BodyInit | null | undefined;
-
-	if (options.params) {
-		const params = new URLSearchParams(
-			object.filter(options.params, null, undefined)
-		).toString();
-
-		if (params) {
-			url = `${url}?${params}`;
-		}
-	}
-
-	if (options.cookies) {
-		options.headers = {
-			...options.headers,
-			cookie: object.serialize(object.filter(options.cookies, null, undefined)),
-		};
-	}
-
-
-	if (options.body) {
-		if (options.body.toString() === "[object Object]") {
-			options.headers = { "content-type": "application/json", ...options.headers };
-			body = JSON.stringify(options.body);
-		} else {
-			body = options.body as BodyInit;
-		}
-	}
-
-	const response = await fetch(url, {
-		method: options.method ?? "GET",
-		headers: {
-			accept: "application/json",
-			...options.headers,
-		},
-		body,
-	});
-
-	const responseBody =
-		options.response !== "none" ? await response[options.response ?? "json"]() : response.body;
-
-
-	if (response.ok) {
-		return {
-			data: responseBody as ResponseData,
-			error: undefined,
-			ok: true,
-			status: response.status,
-			headers: response.headers,
-		};
-	}
-
-	return {
-		data: undefined,
-		error: responseBody as ResponseError,
-		ok: false,
-		status: response.status,
-		headers: response.headers,
-	};
-};
-
 const DELETE = <ResponseData = any, ResponseError = any>(
 	url: string,
-) => REQUEST<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
 
 const HEAD = <ResponseData = any, ResponseError = any>(
 	url: string,
-) => REQUEST<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
 
 const GET = <ResponseData = any, ResponseError = any>(
 	url: string,
-) => REQUEST<ResponseData, ResponseError>(url, { method: "GET", ...options });
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "GET", ...options });
 
 const PATCH = <ResponseData = any, ResponseError = any>(
 	url: string,
-) => REQUEST<ResponseData, ResponseError>(url, { method: "PATCH", ...options });
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "PATCH", ...options });
 
 const POST = <ResponseData = any, ResponseError = any>(
 	url: string,
-) => REQUEST<ResponseData, ResponseError>(url, { method: "POST", ...options });
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "POST", ...options });
 
 const PUT = <ResponseData = any, ResponseError = any>(
 	url: string,
 	options?: OmitRequestOptions<"method">
+) => request<ResponseData, ResponseError>(url, { method: "PUT", ...options });
 
 export default {
 	STATUS_CODE,
 	statusCode: STATUS_CODE,
-	CUSTOM: REQUEST,
-	custom: REQUEST,
+	CUSTOM: request,
+	custom: request,
 	DELETE,
 	delete: DELETE,
 	HEAD,
