@@ -67,12 +67,12 @@ export enum STATUS_CODE {
 	HTTP_511_NETWORK_AUTHENTICATION_REQUIRED = 511,
 }
 
-const REQUEST = async <Data = any, Error = any>(
+const REQUEST = async <ResponseData = any, ResponseError = any>(
 	url: string,
 	options: Types.RequestOptions = {}
 ): Promise<
-	| { data: Data; error: undefined; ok: true; status: number; headers: Headers }
-	| { data: undefined; error: Error; ok: false; status: number; headers: Headers }
+	| { data: ResponseData; error: undefined; ok: true; status: number; headers: Headers }
+	| { data: undefined; error: ResponseError; ok: false; status: number; headers: Headers }
 > => {
 	let body: BodyInit | null | undefined;
 
@@ -118,7 +118,7 @@ const REQUEST = async <Data = any, Error = any>(
 
 	if (response.ok) {
 		return {
-			data: responseBody as Data,
+			data: responseBody as ResponseData,
 			error: undefined,
 			ok: true,
 			status: response.status,
@@ -128,30 +128,42 @@ const REQUEST = async <Data = any, Error = any>(
 
 	return {
 		data: undefined,
-		error: responseBody as Error,
+		error: responseBody as ResponseError,
 		ok: false,
 		status: response.status,
 		headers: response.headers,
 	};
 };
 
-const DELETE = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "DELETE", ...options });
+const DELETE = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
 
-const HEAD = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "HEAD", ...options });
+const HEAD = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
 
-const GET = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "GET", ...options });
+const GET = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "GET", ...options });
 
-const PATCH = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "PATCH", ...options });
+const PATCH = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "PATCH", ...options });
 
-const POST = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "POST", ...options });
+const POST = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "POST", ...options });
 
-const PUT = <Data = any, Error = any>(url: string, options?: Types.RequestOptions) =>
-	REQUEST<Data, Error>(url, { method: "PUT", ...options });
+const PUT = <ResponseData = any, ResponseError = any>(
+	url: string,
+	options?: Types.RequestOptions
+) => REQUEST<ResponseData, ResponseError>(url, { method: "PUT", ...options });
 
 export default {
 	STATUS_CODE,
