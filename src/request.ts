@@ -1,7 +1,7 @@
 import { object } from "@ghostebony/utils";
 import type { RequestOptions } from "./types";
 
-export const request = async <ResponseData = any, ResponseError = any>(
+export const REQUEST = async <ResponseData = any, ResponseError = any>(
 	url: string,
 	options: RequestOptions = {}
 ): Promise<
@@ -27,8 +27,6 @@ export const request = async <ResponseData = any, ResponseError = any>(
 		};
 	}
 
-	// console.log({ endpoint, headers: init.headers });
-
 	if (options.body) {
 		if (options.body.toString() === "[object Object]") {
 			options.headers = { "content-type": "application/json", ...options.headers };
@@ -50,8 +48,6 @@ export const request = async <ResponseData = any, ResponseError = any>(
 	const responseBody =
 		options.response !== "none" ? await response[options.response ?? "json"]() : response.body;
 
-	// console.log({ endpoint, params }, JSON.stringify(responseBody, null, 2));
-
 	if (response.ok) {
 		return {
 			data: responseBody as ResponseData,
@@ -70,3 +66,7 @@ export const request = async <ResponseData = any, ResponseError = any>(
 		headers: response.headers,
 	};
 };
+
+export { REQUEST as request };
+
+export default REQUEST;
