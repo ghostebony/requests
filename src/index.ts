@@ -137,33 +137,32 @@ const REQUEST = async <ResponseData = any, ResponseError = any>(
 
 const DELETE = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "DELETE", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 const HEAD = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "HEAD", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 const GET = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "GET", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 const PATCH = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "PATCH", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 const POST = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
 ) => REQUEST<ResponseData, ResponseError>(url, { method: "POST", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 const PUT = <ResponseData = any, ResponseError = any>(
 	url: string,
-	options?: Types.RequestOptions
-) => REQUEST<ResponseData, ResponseError>(url, { method: "PUT", ...options });
+	options?: Omit<Types.RequestOptions, "method">
 
 export default {
 	STATUS_CODE,
